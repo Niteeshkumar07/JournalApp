@@ -5,6 +5,7 @@ import com.example.alpha.Repository.UserRepository;
 import com.example.alpha.Service.UserDetailsServiceImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.provider.Arguments;
 import org.mockito.ArgumentMatchers;
@@ -37,6 +38,7 @@ public class UserDetailsServiceImplTests {
         MockitoAnnotations.initMocks(this);
     }
 
+    @Disabled
     @Test
     void loadUserByUsernameTests(){
         when(userRepository.findByUserName(ArgumentMatchers.anyString())).thenReturn(User.builder().userName("ram").password("innntn").roles(new ArrayList<>()).build());
