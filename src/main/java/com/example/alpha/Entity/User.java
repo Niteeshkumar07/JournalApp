@@ -1,6 +1,7 @@
 package com.example.alpha.Entity;
 
 import com.mongodb.lang.NonNull;
+import lombok.Builder;
 import lombok.Data;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
@@ -12,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
+@Builder
 @Document(collection = "users")
 public class User {
     @Id
