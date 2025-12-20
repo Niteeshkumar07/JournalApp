@@ -4,6 +4,8 @@ import com.example.alpha.Entity.JournalEntry;
 import com.example.alpha.Entity.User;
 import com.example.alpha.Repository.JournalEntryRepository;
 import org.bson.types.ObjectId;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+
 
 @Service
 public class JournalEntryService {
@@ -48,6 +51,8 @@ public class JournalEntryService {
     public Optional<JournalEntry> getById(ObjectId id) {
         return journalEntryRepository.findById(id);
     }
+
+    // Each Logger is associated with each class
 
     @Transactional
     public boolean deleteById(ObjectId id, String userName) {
