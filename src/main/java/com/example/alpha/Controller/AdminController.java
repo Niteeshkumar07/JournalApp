@@ -2,6 +2,7 @@ package com.example.alpha.Controller;
 
 import com.example.alpha.Entity.User;
 import com.example.alpha.Service.UserService;
+import com.example.alpha.cache.AppCache;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,9 @@ public class AdminController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private AppCache appCache;
+
     @GetMapping("/all-users")
     public ResponseEntity<?> getAllUsers(){
        List<User> all =  userService.getAll();
@@ -29,5 +33,12 @@ public class AdminController {
     public void createUser(@RequestBody User user){
         userService.saveAdmin(user);
 
+    }
+
+    // Agenda here is that if bean is created then
+    // chnage in mongodb not show so we have to restart but we use this mapping and change the data
+    @GetMapping("clear-app-cache")
+    public void clearAppCache(){
+        appCache.init();
     }
 }
