@@ -24,14 +24,28 @@ public class WeatherService {
     @Autowired
     private AppCache appCache;
 
+    @Autowired
+    private RedisService redisService;
+
     public WeatherResponse getWeather(String city){
         // Replace CITY and API_KEY placeholders with actual values
 //        String finalAPI = apiBaseUrl.replace("CITY", city).replace("API_KEY", apiKey);
 
-        String finalAPI = appCache.appCache.get(AppCache.keys.WEATHER_API.toString()).replace(Placeholders.CITY, city).replace(Placeholders.API_KEY, apiKey);
+        WeatherResponse weatherResponse = redisService.get("weather_of_" + city, WeatherResponse.class);
+        if(weatherResponse != null){
+            return weatherResponse;
+        }else{
+            String finalAPI = appCache.appCache.get(AppCache.keys.WEATHER_API.toString()).replace(Placeholders.CITY, city).replace(Placeholders.API_KEY, apiKey);
+            WeatherResponse body = restTemplate.exchange(finalAPI, HttpMethod.GET, null, WeatherResponse.class).getBody();
+            if(body != null){
+                redisService.set("weather_of_"+city,body,300l);
+            }
+            return body;
 
-        // Make API GET call and get response in one line
-        WeatherResponse body = restTemplate.exchange(finalAPI, HttpMethod.GET, null, WeatherResponse.class).getBody();
+        }
+//        String finalAPI = appCache.appCache.get(AppCache.keys.WEATHER_API.toString()).replace(Placeholders.CITY, city).replace(Placeholders.API_KEY, apiKey);
+
+//        WeatherResponse body = restTemplate.exchange(finalAPI, HttpMethod.GET, null, WeatherResponse.class).getBody();
 
 //        System.out.println("Weather API URL: " + finalAPI);
 
@@ -44,6 +58,6 @@ public class WeatherService {
         HttpEntity<String> httpEntity = new HttpEntity<>(requestBody);
         ResponseEntity<WeatherResponse> response = restTemplate.exchange(finalAPI, HttpMethod.POST, httpEntity, WeatherResponse.class);
 */
-        return body;
+//        return body;
     }
 }
