@@ -5,6 +5,7 @@ import com.example.alpha.Repository.UserRepository;
 import com.example.alpha.Service.UserService;
 import com.example.alpha.Service.WeatherService;
 import com.example.alpha.api.response.WeatherResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/user")
+@Tag(name = "User APIs",description = "Read, Update & Delete User")
 public class UserController {
     @Autowired
     private UserService userService;

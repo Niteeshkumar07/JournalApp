@@ -3,7 +3,9 @@ package com.example.alpha.Controller;
 import com.example.alpha.Entity.User;
 import com.example.alpha.Service.UserDetailsServiceImpl;
 import com.example.alpha.Service.UserService;
+import com.example.alpha.dto.UserDTO;
 import com.example.alpha.utilis.JwtUtil;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,6 +24,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/public")
 @Slf4j
+@Tag(name = "Public APIs")
 public class PublicController {
 
     @Autowired
@@ -41,9 +44,14 @@ public class PublicController {
     private JwtUtil jwtUtil;
 
     @PostMapping("/signup")
-    public ResponseEntity<String> signup(@RequestBody User user){
+    public ResponseEntity<String> signup(@RequestBody UserDTO user){
         try {
-            userService.saveNewUser(user); // make sure password is encoded in service
+            User newUser = new User();
+            newUser.setEmail(user.getEmail());
+            newUser.setUserName(user.getUserName());
+            newUser.setPassword(user.getPassword());
+            newUser.setSentimentAnalysis(user.isSentimentAnalysis());
+            userService.saveNewUser(newUser); // make sure password is encoded in service
             return new ResponseEntity<>("User registered successfully", HttpStatus.OK);
         } catch (Exception e){
             log.error("Error during user signup", e);
